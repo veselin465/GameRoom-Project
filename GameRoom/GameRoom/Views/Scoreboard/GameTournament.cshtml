@@ -1,0 +1,32 @@
+﻿@{
+    ViewData["Title"] = "GameTournament";
+}
+@model GameRoom.ViewModels.GameTournamentViewModel
+<h2>Game Tournament</h2>
+<br />
+<form asp-action="GameTournament">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="GameId" class="control-label">Choose Game Id (max: @(Model.LastGameId))</label>
+        
+        <input asp-for="GameId" min="1" max="@(Model.LastGameId)" type="range" style="width:300px;background-color:black;" onmousemove="rangeInputChanged()" id="rangeInputId"/>
+    </div>
+
+    <input type="text" value="1" id="gameId" style="width:100px;" disabled/>    
+
+    <br />
+    <br />
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-default" />
+    </div>
+
+    <script>
+        function rangeInputChanged() {
+            var value = document.getElementById('rangeInputId').value;
+            var valueNumber = Number(value);
+            document.getElementById('gameId').value = valueNumber;
+            
+        }
+    </script>
+
+</form>

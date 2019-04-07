@@ -1,0 +1,46 @@
+﻿
+@{
+    ViewData["Title"] = "DisplayAllGames";
+}
+@model GameRoom.ViewModels.IndexGamesViewModel
+<h2>View All Games</h2>
+
+<style>
+    .gameDescritpion {
+        font:100 20px 'Open Sans','Sans-Serif';
+        word-wrap:break-word;
+    }
+    .box {
+        border-radius: 100px;
+        background: #70ffbd;
+        padding: 30px 0;
+        text-align: center;
+        height: 200px;
+        float: left;
+        width: 40%;
+        margin: 2%;
+    }
+    .horizontalRule {
+        margin-top: 0em;
+        margin-bottom: 0.4em;
+        border-color: black;
+        border-width: 1px;
+        margin-left: 11px;
+        margin-right: 11px;
+    }
+</style>
+
+<div class="container">
+    @foreach (var game in Model.Games)
+    {
+        <figure class="box">
+            <a asp-route-id="@game.Id" asp-area="" asp-action="Detail" asp-controller="Game"
+                class="gameDescritpion"><b>@game.Name</b></a>
+            <span class="gameDescritpion"> [Total points: <b>@game.Score</b>]</span>
+            <hr class="horizontalRule">
+            <p class="gameDescritpion">Minimum age: @game.RequiredAge</p>
+            <p class="gameDescritpion">@game.Description</p>
+        </figure>
+
+    }
+</div>

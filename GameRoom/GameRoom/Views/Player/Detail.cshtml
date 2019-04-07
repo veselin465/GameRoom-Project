@@ -1,0 +1,161 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+}
+@model GameRoom.ViewModels.PlayerSingleExpandedViewModel
+
+<style>
+    .gameDescritpion {
+        font: 20px 'Open Sans','Sans-Serif';
+        word-wrap: break-word;
+    }
+
+    .box {
+        border-radius: 100px;
+        background: #3dff46;
+        padding: 30px 0;
+        text-align: center;
+        height: 200px;
+        position: relative;
+        float: left;
+        left: 0;
+        width: 40%;
+        margin: 2%;
+    }
+
+    .horizontalRule {
+        margin-top: 0.6em;
+        margin-bottom: 0.6em;
+        border-color: black;
+        border-width: 1px;
+    }
+
+    .playerPerformance {
+        font: 100 20px 'Open Sans','Sans-Serif';
+        word-spacing: 4px;
+    }
+
+    .SignUpForGameButton {
+        background-color: #64ba67;
+        border-radius: 20px;
+        border: 2px;
+        padding: 15px 40px;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 5px;
+        display: inline-block;
+    }
+
+    .scoreboard {
+        padding: 5px;
+        overflow-y: auto;
+        height: 150px;
+        border: solid;
+        border-top-width: 1.5px;
+        width: 60%;
+        text-align: center;
+        width: 60%;
+        background-color: #d3ff68;
+    }
+
+    .scoreboardHeader {
+        padding: 5px;
+        text-align: center;
+        border: solid;
+        width: 60%;
+        border-bottom-width: 1.5px;
+        font-size: 30px;
+        background-color: #d3ff68;
+    }
+</style>
+
+
+    @if (Model.Player.Id == Model.Player.LoggedInId)
+    {
+        <script>
+            document.body.style.backgroundColor = "#f0f0f0";
+        </script>
+    }
+        
+
+<br />
+<span style="font: 30px 'Consolas','Sans-Serif';">
+    Name: @Model.Player.FirstName<b> </b>@Model.Player.LastName
+    @if (!Model.IsBanned&&!Model.IsOptedOut)
+    {
+    <a style="font: 20px 'Consolas';color:red;" asp-route-id="@Model.Player.Id" asp-area="" asp-action="BanPlayer" asp-controller="Player"><b>[BAN THIS PLAYER]</b></a>
+    }
+</span>
+<br />
+<span style="font: 30px 'Consolas','Sans-Serif';">User: @Model.Player.UserName
+    </span>
+@if (!Model.IsOptedOut && !Model.IsBanned)
+{
+    <br />
+
+<span style="font: 30px 'Consolas','Sans-Serif';">
+        Total: @Model.Player.Score points</span>
+        <br />
+
+}
+    @if (Model.Player.Id == Model.Player.LoggedInId && !Model.IsOptedOut && !Model.IsBanned)
+    {
+        <span style="font-size: 20px">
+            If you want to opt out,
+
+            <a asp-route-id="" asp-area="" asp-action="OptOut" asp-controller="Player" class="gameDescritpion">click here</a>
+        </span>
+    }
+    <br />
+    @if (Model.Player.Id == Model.Player.LoggedInId && !Model.IsOptedOut && !Model.IsBanned)
+    {
+        <span style="font-size: 20px">
+            To change account data,
+            <a asp-route-id="@Model.Player.Id" asp-area="" asp-action="Change" asp-controller="Player" class="gameDescritpion">click here</a>
+        </span>
+
+    }
+
+    <hr class="horizontalRule">
+
+    <div class="container" style="position:relative;">
+        <div style="width:60%">
+            <span style="font: 20px 'Consolas','Sans-Serif';">Age: @Model.Age</span><br />
+            @if (Model.Player.AdditionalInformation == null)
+            {
+                <i style="font: italic 18px 'Open Sans','Sans-Serif';
+        word-wrap: break-word;">(No additional information given)</i>
+            }
+            else
+            {
+                <span class="gameDescritpion">@Model.Player.AdditionalInformation</span>
+            }
+            <br />
+            <br />
+        </div>
+
+        @if (Model.IsBanned)
+        {
+            <strong style="font: 600 50px 'Consolas','Sans-Serif';color:red">Player is <u>BANNED</u></strong><br />
+
+        }
+        else if (Model.IsOptedOut)
+        {
+            <strong style="font: 600 50px 'Consolas','Sans-Serif';color:red">Player opted out</strong><br />
+        }
+        else
+        {
+            <div class="scoreboardHeader">Scoreboard</div>
+            <div class="scoreboard">
+                @foreach (var game in Model.Games)
+                {
+                    <p class="playerPerformance">
+                        <a asp-route-id="@game.Id" asp-area="" asp-action="Detail" asp-controller="Game">@game.Name</a>
+                        <b> (@(game.Score)p)</b>
+                    </p>
+                }
+
+            </div>
+        }
+        <br />
+    </div>

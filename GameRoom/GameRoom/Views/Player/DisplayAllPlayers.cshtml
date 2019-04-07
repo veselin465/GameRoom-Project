@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewData["Title"] = "DisplayAllPlayers";
+}
+@model GameRoom.ViewModels.IndexPlayersViewModel
+
+<style>
+    p {
+        padding: 0px;
+        word-spacing: 3px;
+    }
+
+    .gameDescritpion {
+        font: 100 20px 'Open Sans','Sans-Serif';
+        word-wrap: break-word;
+    }
+
+    .box {
+        border-radius: 100px;
+        background: #3dff46;
+        padding: 30px 0;
+        text-align: center;
+        height: 200px;
+        float: left;
+        width: 30%;
+        margin: 1%;
+    }
+
+    .horizontalRule {
+        margin-top: 0em;
+        margin-bottom: 0.4em;
+        border-color: black;
+        border-width: 1px;
+        margin-left: 11px;
+        margin-right: 11px;
+    }
+</style>
+
+<h2>DisplayAllPlayers</h2>
+
+<div class="container">
+    @foreach (var player in Model.Players)
+    {
+        <figure class="box">
+            
+            <a asp-route-id="@player.Id" asp-area="" asp-action="Detail" asp-controller="Player" class="gameDescritpion">@player.FirstName<i> </i> @player.LastName<i>  </i><b> (@player.UserName)</b></a>
+            <hr class="horizontalRule">
+            <span class="gameDescritpion">Earned points: <b>@player.Score</b></span>
+            @if (player.AdditionalInformation == null)
+            {
+                
+                <p class="gameDescritpion" style="font-size:16px;margin-top:4px"><i>No additional information given</i></p>
+            }
+            else
+            {
+                <p class="gameDescritpion">@player.AdditionalInformation</p>
+            }
+        </figure>
+
+    }
+</div>

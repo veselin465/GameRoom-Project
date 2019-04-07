@@ -1,0 +1,150 @@
+﻿
+@{
+    ViewData["Title"] = "Detail";
+}
+@model GameRoom.ViewModels.GameSingleExpandedViewModel
+
+<style>
+    .gameDescritpion {
+        font: 100 20px 'Open Sans','Sans-Serif';
+        word-wrap: break-word;
+    }
+
+    .box {
+        border-radius: 100px;
+        background: #70ffbd;
+        padding: 30px 0;
+        text-align: center;
+        height: 200px;
+        position: relative;
+        float: left;
+        left: 0;
+        width: 40%;
+        margin: 2%;
+    }
+
+    .horizontalRule {
+        margin-top: 0.6em;
+        margin-bottom: 0.6em;
+        border-color: black;
+        border-width: 1px;
+    }
+
+    .playerPerformance {
+        font: 100 20px 'Open Sans','Sans-Serif';
+        word-spacing: 4px;
+    }
+
+    .SignUpForGameButton {
+        background-color: #64ba67;
+        border-radius: 20px;
+        border: 2px;
+        padding: 15px 40px;
+        font-size: 20px;
+        margin: 5px;
+        display: inline-block;
+    }
+
+    .scoreboard {
+        padding: 5px;
+        overflow-y: auto;
+        height: 150px;
+        border: solid;
+        border-top-width: 1.5px;
+        width: 60%;
+        text-align: center;
+        width: 60%;
+        background-color: #d3ff68;
+    }
+
+    .scoreboardHeader {
+        padding: 5px;
+        text-align: center;
+        border: solid;
+        width: 60%;
+        border-bottom-width: 1.5px;
+        font-size: 30px;
+        background-color: #d3ff68;
+    }
+</style>
+<br />
+<span style="font: 30px 'Consolas','Sans-Serif';">Name: @Model.Game.Name</span>
+
+@if (Model.Game.IsRemoved)
+{
+<a style="font: 20px 'Consolas';color:red;" asp-route-id="@Model.Game.Id" asp-area="" asp-action="RemoveGame" asp-controller="Game"><b>[REMOVE THIS GAME]</b></a>
+}
+<br />
+
+@if (!Model.Game.IsRemoved)
+{
+
+<span style="font: 30px 'Consolas','Sans-Serif';">
+    Total: @Model.Game.Score points</span>
+<br />
+<span style="font: 25px 'Consolas','Sans-Serif'">
+    (Minimum age: @Model.Game.RequiredAge)
+</span>
+
+    <hr class="horizontalRule">
+    <div class="container" style="position:relative;">
+        <div style="width:60%">
+
+            <span class="gameDescritpion">@Model.Game.Description</span>
+        </div>
+        <br />
+        <div class="scoreboardHeader">Scoreboard</div>
+        <div class="scoreboard">
+            @foreach (var player in Model.Players)
+            {
+                <p class="playerPerformance">
+                    <a asp-route-id="@player.Id" asp-area="" asp-action="Detail" asp-controller="Player">@player.UserName</a>
+                    <b> (@(player.Score)p)</b>
+                </p>
+            }
+
+        </div>
+        <br />
+        <div style="width:60%;text-align: center;">
+            <div class="SignUpForGameButton">
+                
+                @if (!Model.IsCurrentPlayerAlreadySignedIn)
+                {
+                    <a asp-route-id="@Model.Game.Id" asp-area="" asp-action="SignUpPlayerForAGame" asp-controller="Scoreboard">Sign up for current game (@Model.Game.Name)</a>
+                }
+                else
+                {
+                    if (!Model.CanSignedInPlayerCompete)
+                    {
+                        <span>You cant compete any longer</span><br />
+                        <span>duo to your account status.</span>
+
+
+                    }else if (Model.Game.Score < 0)
+                    {
+                        <span>You cant compete any longer</span><br />
+                        <span>duo to negative score.</span>
+
+                    }
+                    else
+                    {
+                        <span>Your score: @Model.SignedInPlayerScore</span>
+
+                    }
+                    
+                }
+
+
+
+            </div>
+
+        </div>
+
+    </div>
+}
+else
+{
+    <br />
+    <strong style="font: 600 50px 'Consolas','Sans-Serif';color:red">Game is <u>REMOVED</u></strong><br />
+
+}

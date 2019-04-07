@@ -1,0 +1,45 @@
+﻿
+@{
+    ViewData["Title"] = "SuccessfulLogIn";
+}
+@model GameRoom.ViewModels.PlayerSingleViewModel
+
+@if (!Model.IsBanned && !Model.IsOptedOut)
+{
+<h2 style="color:green"><b>Successfully Logged In</b></h2>
+<h4>Your username and password are locally saved on your computer</h4>
+}
+<br />
+<span style="font: 30px 'Consolas','Sans-Serif';">Name: @Model.FirstName<b> </b>@Model.LastName</span>
+<br />
+<span style="font: 30px 'Consolas','Sans-Serif';">User: @Model.UserName</span>
+<br />
+<br />
+
+@if (!(Model.IsBanned || Model.IsOptedOut))
+{
+<span style="font: 100 20px 'Consolas','Sans-Serif'">Go to your account, <a asp-route-id="@Model.Id" asp-area="" asp-action="Detail" asp-controller="Player" class="gameDescritpion">here</a></span>
+
+<br />
+<span style="font: 100 20px 'Consolas','Sans-Serif'">Change account information, <a asp-route-id="@Model.Id" asp-area="" asp-action="Change" asp-controller="Player" class="gameDescritpion">here</a></span>
+}
+<hr class="horizontalRule">
+
+@if (Model.IsBanned)
+{
+    <strong style="font: 600 50px 'Consolas','Sans-Serif';color:red">This account is <u>BANNED</u></strong><br />
+
+}
+else if (Model.IsOptedOut)
+{
+    <strong style="font: 600 50px 'Consolas','Sans-Serif';color:red">You have opted out</strong><br />
+}
+else
+{
+
+<p style="font-size: 20px">If you want to opt out
+    
+    <a asp-route-id="" asp-area="" asp-action="OptOut" asp-controller="Player" class="gameDescritpion">click here</a>
+</p>
+<strong> WARNING: Opting out is pernament and can NOT be backed </strong>
+}
