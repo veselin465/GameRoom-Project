@@ -12,4 +12,4 @@ To establish connections to your database go to Visual Studio > Package Manager 
 When starting the app, make sure that the target project is JobSearching.
 
 Idea of the app:
-Users register to the app. The first registered is the admin. The admin creates other user accounts and registers games. All users can sign up for a game, starting with defualt of 100 points. For test purposes, tournaments are hosted where the current user gets random scores for all games they have signed up for.
+Users register to the app. The first registered user should be added via SQL query. The first account gets admin role. The admin can create other user accounts and register games. Logged in users can sign up for a game, starting with defualt of 100 points. For test purposes, tournaments are being hosted where the current user gets random scores for all games they have signed up for.
